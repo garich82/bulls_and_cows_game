@@ -1,8 +1,25 @@
 import random
 
 
+# def has_repeated_digits(digits, guesses):
+#     for guess in guesses.keys():
+#         if set(digits) == set(str(guess)):
+#             return True
+#     return False
+
+def has_repeated_digits(digits, guesses):
+    for guess in guesses.keys():
+        guess_digits = [int(digit) for digit in str(guess)]
+        if all(guess_digits.count(digit) >= digits.count(digit) for digit in digits):
+            return True
+    return False
+
 def generate_secret_number(possible_digits, sure_digits, guesses):
-    if sure_digits:
+    if len(possible_digits) == 4:
+        digits = random.sample(possible_digits, k=4)
+        while digits[0] == 0 or int(''.join(map(str, digits))) in guesses:
+            digits = random.sample(possible_digits, k=4)
+    elif sure_digits:
         remaining_digits = random.sample([digit for digit in possible_digits if digit not in sure_digits], k=2)
         digits = sure_digits + remaining_digits
         while digits[0] == 0 or int(''.join(map(str, digits))) in guesses:
@@ -12,6 +29,7 @@ def generate_secret_number(possible_digits, sure_digits, guesses):
         while digits[0] == 0 or int(''.join(map(str, digits))) in guesses:
             digits = random.sample(possible_digits, k=4)
     return int(''.join(map(str, digits)))
+
 
 
 def calculate_score(secret_number, guess):
@@ -62,6 +80,12 @@ play_game()
 
 # import random
 #
+# def has_repeated_digits(digits, guesses):
+#     for guess in guesses.keys():
+#         if set(digits) == set(str(guess)):
+#             return True
+#     return False
+#
 #
 # def generate_secret_number(possible_digits, sure_digits, guesses):
 #     if sure_digits:
@@ -74,6 +98,7 @@ play_game()
 #         while digits[0] == 0 or int(''.join(map(str, digits))) in guesses:
 #             digits = random.sample(possible_digits, k=4)
 #     return int(''.join(map(str, digits)))
+#
 #
 #
 # def calculate_score(secret_number, guess):
@@ -89,6 +114,7 @@ play_game()
 #
 #
 # def play_game(secret_number):
+#     secret_number = secret_number
 #     possible_digits = list(range(10))  # List of possible digits for the secret number
 #     sure_digits = []  # List of digits for which we know that are in the secret number
 #     guesses = {}
@@ -122,5 +148,4 @@ play_game()
 #     average_guesses = total_guesses / num_games
 #     print(f"Average number of guesses across {num_games} games: {average_guesses}")
 #
-#
-# run_multiple_games(20000)  # Change the number of games as needed
+# run_multiple_games(10000)  # Change the number of games as needed
