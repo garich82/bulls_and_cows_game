@@ -1,37 +1,6 @@
 import random
 
 
-def generate_secret_number():
-    """Generate a random 4-digit secret number for the computer"""
-    return random.sample(range(10), 4)
-
-
-def player_secret_number():
-    """Validate player's number"""
-    while True:
-        player_number = input("Enter your secret number (4 unique digits): ")
-        if len(player_number) != 4 or not player_number.isdigit():
-            print("Input is invalid. Please enter a 4-digit number!")
-            continue
-
-        digits = [int(i) for i in player_number]
-        if len(set(digits)) != 4 or digits[0] == 0:
-            print("Number should not start with 0 and/or digits must not repeat!")
-            continue
-
-        return digits
-
-
-def get_user_guess():
-    """Get a 4-digit guess from the user."""
-    while True:
-        guess = input("Enter your guess (4 digits): ")
-        if len(guess) != 4 or not guess.isdigit():
-            print("Invalid guess. Please enter a 4-digit number.")
-        else:
-            return list(map(int, guess))
-
-
 def has_repeated_digits(digits, guesses):
     for guess in guesses.keys():
         guess_digits = list(guess)
@@ -90,9 +59,9 @@ def calculate_bulls_and_cows(secret_number, guess):
     return bulls, cows
 
 
-def play_game():
-    computer_number = generate_secret_number()
-    player_number = player_secret_number()
+def play_game(secret_number):
+    # player_number = generate_secret_number()
+    player_number = [int(i) for i in str(secret_number)]
     computer_guesses = {}
     possible_digits = list(range(10))
     sure_digits = []
@@ -100,15 +69,6 @@ def play_game():
 
     while True:
         counter += 1
-        guess = get_user_guess()
-
-        bulls, cows = calculate_bulls_and_cows(computer_number, guess)
-
-        if bulls == 4:
-            print(f"Congratulations! You guessed computer's number with {counter} attempts")
-            break
-
-        print(f"You have {bulls} bulls and {cows} cows")
 
         computer_guess = get_computer_guess(possible_digits, sure_digits, computer_guesses)
         comp_bulls, comp_cows = calculate_bulls_and_cows(player_number, computer_guess)
@@ -120,24 +80,28 @@ def play_game():
             possible_digits = [digit for digit in possible_digits if digit not in digits_to_remove]
         elif guessed_digits == 4:
             if comp_bulls == 4:
-                print(f"Computer guessed your number in {counter} attempts! Game Over!")
+                # print(f"Computer guessed your number in {counter} attempts! Game Over!")
                 break
             possible_digits = computer_guess
         elif guessed_digits == 2 and len(possible_digits) == 6 and not sure_digits:
             digits_to_remove = computer_guess
             sure_digits = [digit for digit in possible_digits if digit not in digits_to_remove]
 
-        computer_guess_int = computer_guess[0] * 1000 + computer_guess[1] * 100\
-                                                  + computer_guess[2] * 10 + computer_guess[3]
-        print(f"Computer guessed {computer_guess_int} and got {comp_bulls} bulls and {comp_cows} cows")
+        # computer_guess_int = computer_guess[0] * 1000 + computer_guess[1] * 100\
+        #                                           + computer_guess[2] * 10 + computer_guess[3]
+        # print(f"Computer guessed {computer_guess_int} and got {comp_bulls} bulls and {comp_cows} cows")
+
+    return counter + 1
 
 
-# Start the game
-print("Welcome to Bulls and Cows!")
-print("I have generated a 4-digit secret number. You will also have to think of a number.")
-print("Try to guess my number while I'm trying to guess yours.")
-print("For every digit in each guess that matches the secret number in the correct position, that's a bull.")
-print("For every digit in each guess that matches the secret number but in the wrong position, that's a cow.")
-print("Let's start!")
+def run_multiple_games(num_games):
+    secret_number = int(input("Enter a secret 4-digit number with unique digits (excluding leading 0): "))
+    total_guesses = 0
+    for _ in range(num_games):
+        guesses = play_game(secret_number)
+        total_guesses += guesses
+    average_guesses = total_guesses / num_games
+    print(f"Average number of guesses across {num_games} games: {average_guesses}")
 
-play_game()
+
+run_multiple_games(10000)  # Change the number of games as needed
