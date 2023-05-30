@@ -3,7 +3,10 @@ import random
 
 def generate_secret_number():
     """Generate a random 4-digit secret number for the computer"""
-    return random.sample(range(10), 4)
+    digits = random.sample(range(10), 4)
+    while digits[0] == 0:
+        digits = random.sample(range(10), 4)
+    return digits
 
 
 def player_secret_number():
@@ -105,7 +108,8 @@ def play_game():
         bulls, cows = calculate_bulls_and_cows(computer_number, guess)
 
         if bulls == 4:
-            print(f"Congratulations! You guessed computer's number with {counter} attempts")
+            print(f"\nCongratulations! You guessed computer's number with {counter} attempts\n")
+            return[0, 1]
             break
 
         print(f"You have {bulls} bulls and {cows} cows")
@@ -120,8 +124,9 @@ def play_game():
             possible_digits = [digit for digit in possible_digits if digit not in digits_to_remove]
         elif guessed_digits == 4:
             if comp_bulls == 4:
-                print(f"Computer guessed your number in {counter} attempts! Game Over!")
-                break
+                print(f"\nComputer guessed your number in {counter} attempts! Game Over!")
+                print(f"Computer number was {computer_number}\n")
+                return [1, 0]
             possible_digits = computer_guess
         elif guessed_digits == 2 and len(possible_digits) == 6 and not sure_digits:
             digits_to_remove = computer_guess
@@ -140,4 +145,30 @@ print("For every digit in each guess that matches the secret number in the corre
 print("For every digit in each guess that matches the secret number but in the wrong position, that's a cow.")
 print("Let's start!")
 
-play_game()
+computer_wins = 0
+player_wins = 0
+
+while True:
+    computer_win, player_win = play_game()
+    computer_wins += computer_win
+    player_wins += player_win
+
+    print("Current result is:")
+    print(f"Computer: {computer_wins} - Player: {player_wins}\n")
+
+    end_of_game = False
+    while True:
+        user_input = input("Do you want to continue? (Y)es or (N)o: ")
+
+        if user_input.lower() == 'y' or user_input.lower() == 'yes':
+            print("You chose to continue.\n")
+            break
+        elif user_input.lower() == 'n' or user_input.lower() == 'no':
+            print("You chose to stop. This is tne end of the game!")
+            end_of_game = True
+            break
+        else:
+            print("Invalid input. Please enter either 'Y' or 'N'.")
+
+    if end_of_game:
+        break
