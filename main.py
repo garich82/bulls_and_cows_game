@@ -26,7 +26,7 @@ def player_secret_number():
 def get_user_guess():
     while True:
         guess = input("Enter your guess (4 digits): ")
-        if len(guess) != 4 or not guess.isdigit() or guess[0] == '0':
+        if len(set(guess)) != 4 or not guess.isdigit() or guess[0] == '0':
             print("Invalid guess. Please enter a 4-digit number without leading zero.")
         else:
             return list(map(int, guess))
