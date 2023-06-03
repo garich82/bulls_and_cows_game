@@ -120,7 +120,7 @@ def play_game():
                              + computer_guess[2] * 10 + computer_guess[3]
         print(f"Computer guessed {Fore.RED}{computer_guess_int}{Fore.RESET} and "
               f"got {Fore.LIGHTGREEN_EX}{comp_bulls}{Fore.RESET} bulls and "
-              f"{Fore.LIGHTCYAN_EX}{comp_cows}{Fore.RESET} cows")
+              f"{Fore.LIGHTCYAN_EX}{comp_cows}{Fore.RESET} cows.")
 
 
 # Start the game
