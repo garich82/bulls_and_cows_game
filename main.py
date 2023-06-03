@@ -92,7 +92,7 @@ def play_game():
         bulls, cows = calculate_bulls_and_cows(computer_number, guess)
 
         if bulls == 4:
-            print(f"\nCongratulations! You guessed computer's number with {counter} attempts\n")
+            print(f"\nCongratulations! You guessed computer's number with {counter} attempts.\n")
             return [0, 1]
 
         print(f"You have {Fore.LIGHTGREEN_EX}{bulls}{Fore.RESET} bulls and "
