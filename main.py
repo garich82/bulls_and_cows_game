@@ -1,4 +1,5 @@
 import random
+from colorama import Fore
 
 
 def generate_secret_number():
@@ -25,7 +26,7 @@ def player_secret_number():
 
 def get_user_guess():
     while True:
-        guess = input("Enter your guess (4 digits): ")
+        guess = input("\nEnter your guess (4 digits): ")
         if len(guess) != 4 or not guess.isdigit() or guess[0] == '0':
             print("Invalid guess. Please enter a 4-digit number without leading zero.")
         else:
@@ -94,7 +95,8 @@ def play_game():
             print(f"\nCongratulations! You guessed computer's number with {counter} attempts\n")
             return [0, 1]
 
-        print(f"You have {bulls} bulls and {cows} cows")
+        print(f"You have {Fore.LIGHTGREEN_EX}{bulls}{Fore.RESET} bulls and "
+              f"{Fore.LIGHTCYAN_EX}{cows}{Fore.RESET} cows")
 
         computer_guess = get_computer_guess(possible_digits, sure_digits, computer_guesses)
         comp_bulls, comp_cows = calculate_bulls_and_cows(player_number, computer_guess)
@@ -116,7 +118,9 @@ def play_game():
 
         computer_guess_int = computer_guess[0] * 1000 + computer_guess[1] * 100 \
                              + computer_guess[2] * 10 + computer_guess[3]
-        print(f"Computer guessed {computer_guess_int} and got {comp_bulls} bulls and {comp_cows} cows")
+        print(f"Computer guessed {Fore.RED}{computer_guess_int}{Fore.RESET} and "
+              f"got {Fore.LIGHTGREEN_EX}{comp_bulls}{Fore.RESET} bulls and "
+              f"{Fore.LIGHTCYAN_EX}{comp_cows}{Fore.RESET} cows")
 
 
 # Start the game
